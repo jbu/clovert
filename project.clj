@@ -8,12 +8,20 @@
                  [org.clojure/clojurescript "0.0-2202"]]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {
+              :repl-listen-port 9000
+              :repl-launch-commands
+                {"index" ["open" "-a" "Google Chrome" "--args" "http://localhost:8000/index.html"]}
               :builds [{
                         ; The path to the top-level ClojureScript source directory:
                         ;:source-paths ["src-cljs"]
+                        :source-paths ["src"]
                         ; The standard ClojureScript compiler options
                         ; (See the ClojureScript compiler documentation for details.)
                         :compiler {
                                    ;:output-to "war/javascripts/main.js"  ; default: target/cljsbuild-main.js
+                                   :output-dir "resources/public/js"
+                                   :output-to "resources/public/js/main.js"
+                                   :source-map "resources/public/js/main.js.map"
+                                   :warnings true
                                    :optimizations :whitespace
                                    :pretty-print true}}]})

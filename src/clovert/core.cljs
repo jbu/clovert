@@ -1,6 +1,4 @@
 (ns clovert.core)
 
-(defn foo
-  "I don't do a whole lot."
-  [x]
-  (println x "Hello, World!"))
+(defn ^:export greet [n]
+  (str "Hello " n))
