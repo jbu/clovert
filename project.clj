@@ -4,11 +4,12 @@
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
   :plugins [[lein-cljsbuild "1.0.3"]]
-  :dependencies [[org.clojure/clojure "1.5.1"]
+  :dependencies [[org.clojure/clojure "1.6.0"]
                  [org.clojure/clojurescript "0.0-2202"]
                  [hiccups "0.3.0"]
                  [om "0.5.3"]
-                 [sablono "0.2.15"]]
+                 [sablono "0.2.15"]
+                 ]
   :hooks [leiningen.cljsbuild]
   :cljsbuild {
               :repl-listen-port 9000

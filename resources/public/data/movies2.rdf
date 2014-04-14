@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+
+<rdf:rdf
+  xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  xmlns:dc="http://purl.org/metadata/dublin_core/"
+  xmlns:gmp="http://www.gmp.usyd.edu.au/schema/resources/">
+
+  <rdf:Description about="http://www.imdb.com/Title?0015716">
+    <dc:Title>Crook Buster</dc:Title>
+    <gmp:results rdf:parseType="Resource" gmp:dataset="gmp:average" gmp:mark="0.500000" gmp:reliability="0.000000"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0017324"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0016943"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0016873"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0016807"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0017267"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0017125"/>
+  </rdf:Description>
+  <rdf:Description about="http://www.imdb.com/Title?0017125">
+    <dc:Title>Martin of the Mounted</dc:Title>
+    <gmp:results rdf:parseType="Resource" gmp:dataset="gmp:average" gmp:mark="0.500000" gmp:reliability="0.000000"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0015716"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0016943"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0028356"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0065375"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0056063"/>
+    <gmp:peer rdf:resource="http://www.imdb.com/Title?0056172"/>
+  </rdf:Description>
+</rdf:rdf>

@@ -14,4 +14,7 @@
                  [:li n])]
           (html/submit-button "React!")])))
 
-(om/root widget {} {:target (js/document (getElementById "stuff"))})
+(om/root widget {} {:target js/document.body})
+
+;(om/root widget {:text "Hello world!"}
+;  {:target (. js/document (getElementById "stuff"))})
