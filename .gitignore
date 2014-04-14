@@ -1,5 +1,5 @@
 /target
-/resources
+/resources/public/js
 /classes
 /checkouts
 pom.xml
