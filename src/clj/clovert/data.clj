@@ -19,7 +19,8 @@
   {:about (get-in node [:attrs :about])
    :title (get-in (some #(= (:tag %) :dc:Title)(:content node)) [:content 0])
    ;:mark  (get-in node [:content 0 :])
-   :node node})
+   ;:node node
+   })
 (defmethod replace-node :gmp:peer [node]
   {:peer (get-in node [:attrs :rdf:resource])})
 (defmethod replace-node :gmp:results [node]
@@ -28,4 +29,4 @@
 (defmethod replace-node :default [node]
   node)
 
-(w/prewalk #(replace-node %) m2)
+(w/postwalk #(replace-node %) m2)
