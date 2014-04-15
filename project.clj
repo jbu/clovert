@@ -11,6 +11,7 @@
                  [sablono "0.2.15"]
                  ]
   :hooks [leiningen.cljsbuild]
+  :source-paths ["src/clj"]
   :cljsbuild {
               :repl-listen-port 9000
               :repl-launch-commands
@@ -18,7 +19,7 @@
               :builds [{
                         ; The path to the top-level ClojureScript source directory:
                         ;:source-paths ["src-cljs"]
-                        :source-paths ["src"]
+                        :source-paths ["src/cljs"]
                         ; The standard ClojureScript compiler options
                         ; (See the ClojureScript compiler documentation for details.)
                         :compiler {
