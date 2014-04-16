@@ -8,8 +8,8 @@
 (defn zip-str [s]
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
 
-
-(def m2 (zip-str (slurp "resources/public/data/movies700.rdf")))
+(def root "resources/public/data/")
+(def files ["movies100", "movies300", "movies500", "movies700"])
 
 (defmulti replace-node :tag)
 (defmethod replace-node :rdf:rdf [node]
@@ -30,10 +30,13 @@
 (defmethod replace-node :default [node]
   node)
 
-(def parsed (first (w/postwalk #(replace-node %) m2)))
+(defn process-file [fl]
+  (let [rdfn (str root fl ".rdf")
+        jsnn (str root fl ".json")
+        z (zip-str (slurp rdfn))
+        p (first (w/postwalk #(replace-node %) z))
+        js (json/write-str p)]
+    (spit jsnn js)))
 
-(def jstr (json/write-str parsed))
-
-;;(json/pprint parsed)
-
-(json/read-str jstr)
+(doseq [f files]
+  (process-file f))
