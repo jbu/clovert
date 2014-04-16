@@ -1,32 +1,35 @@
 (ns clovert.data
   (:require [clojure.xml :as xml]
             [clojure.zip :as zip]
-            [clojure.walk :as w]))
+            [clojure.walk :as w]
+            [clojure.data.json :as json]))
 
 
 (defn zip-str [s]
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
 
 
-(def m2 (zip-str (slurp "resources/public/data/movies2.rdf")))
+(def m2 (zip-str (slurp "resources/public/data/movies100.rdf")))
 
 (defmulti replace-node :tag)
 (defmethod replace-node :rdf:rdf [node]
-  (get node :content))
-(defmethod replace-node :dc:Title [node]
-  {:title (get-in node [:content 0])})
+  (:content node))
 (defmethod replace-node :rdf:Description [node]
   {:about (get-in node [:attrs :about])
-   :title (get-in (some #(= (:tag %) :dc:Title)(:content node)) [:content 0])
-   ;:mark  (get-in node [:content 0 :])
-   ;:node node
+   :title (some identity
+                (map #(get-in % [:content 0]) (:content node)))
+   :peers (filter identity
+                  (map #(get-in % [:attrs :rdf:resource]) (:content node)))
+   :mark  (Float/parseFloat
+           (some identity
+                 (map #(get-in % [:attrs :gmp:mark]) (:content node))))
+   :reliability  (Float/parseFloat
+                  (some identity
+                        (map #(get-in % [:attrs :gmp:reliability]) (:content node))))
    })
-(defmethod replace-node :gmp:peer [node]
-  {:peer (get-in node [:attrs :rdf:resource])})
-(defmethod replace-node :gmp:results [node]
-  {:mark (Float/parseFloat (get-in node [:attrs :gmp:mark]))
-   :reliability (Float/parseFloat (get-in node [:attrs :gmp:reliability]))})
 (defmethod replace-node :default [node]
   node)
 
-(w/postwalk #(replace-node %) m2)
+(def parsed (first (w/postwalk #(replace-node %) m2)))
+
+(json/pprint parsed)

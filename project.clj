@@ -9,6 +9,7 @@
                  [hiccups "0.3.0"]
                  [om "0.5.3"]
                  [sablono "0.2.15"]
+                 [org.clojure/data.json "0.2.4"]
                  ]
   :hooks [leiningen.cljsbuild]
   :source-paths ["src/clj"]
