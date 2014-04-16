@@ -11,6 +11,7 @@
                  [sablono "0.2.15"]
                  [org.clojure/data.json "0.2.4"]
                  [aysylu/loom "0.4.2"]
+                 [org.clojure/core.async "0.1.278.0-76b25b-alpha"]
                  ]
   :hooks [leiningen.cljsbuild]
   :source-paths ["src/clj"]
