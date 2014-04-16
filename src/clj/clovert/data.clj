@@ -9,7 +9,7 @@
   (zip/xml-zip (xml/parse (java.io.ByteArrayInputStream. (.getBytes s)))))
 
 
-(def m2 (zip-str (slurp "resources/public/data/movies100.rdf")))
+(def m2 (zip-str (slurp "resources/public/data/movies700.rdf")))
 
 (defmulti replace-node :tag)
 (defmethod replace-node :rdf:rdf [node]
@@ -32,4 +32,8 @@
 
 (def parsed (first (w/postwalk #(replace-node %) m2)))
 
-(json/pprint parsed)
+(def jstr (json/write-str parsed))
+
+;;(json/pprint parsed)
+
+(json/read-str jstr)
