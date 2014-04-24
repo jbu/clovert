@@ -2,7 +2,8 @@
   (:require [clojure.xml :as xml]
             [clojure.zip :as zip]
             [clojure.walk :as w]
-            [clojure.data.json :as json]))
+            [clojure.data.json :as json]
+            [clojure.edn :as edn]))
 
 
 (defn zip-str [s]
@@ -36,10 +37,12 @@
 (defn process-file [fl]
   (let [rdfn (str root fl ".rdf")
         jsnn (str root fl ".json")
+        ednn (str root fl ".edn")
         z (zip-str (slurp rdfn))
-        p (first (w/postwalk #(replace-node %) z))
-        js (json/write-str p)]
-    (spit jsnn js)))
+        p (first (w/postwalk #(replace-node %) z))]
+    (do
+      (spit jsnn (json/write-str p))
+      (spit ednn (prn-str p)))))
 
 (doseq [f files]
   (process-file f))
