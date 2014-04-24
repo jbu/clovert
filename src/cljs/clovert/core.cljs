@@ -3,28 +3,27 @@
             [om.dom :as dom :include-macros true]
             [sablono.core :as html :refer-macros [html]]
             [goog.net.XhrIo :as xhr]
-            [cljs.core.async :as async :refer [chan close!]])
+            [cljs.reader :as reader]
+            [goog.dom :as gdom]
+            [cljs.core.async :as async :refer [chan close! <!]])
   (:require-macros
    [cljs.core.async.macros :refer [go alt!]]))
 
+(enable-console-print!)
 
 (defn ^:export greet [n]
   (str "Hello " n))
 
-(def app-state (atom {}))
+(def app-state (atom {:movies [{:title "a"} {:title "B"} {:title "c"}]}))
 
 (defn widget [data]
   (om/component
-   (html [:div "Hello world!"
-          [:ul (for [n [1 2 3]]
-                 [:li (get "title" n)])]])))
+     (html [:ul (for [n (:movies data)]
+                   [:li (:title n)])])))
 
-(om/root
- (fn [app owner]
-   (apply dom/ul nil
-          (map (fn [text] (dom/li nil text)) (:list app))))
- app-state
- {:target js/document.body})
+
+(om/root widget app-state
+  {:target js/document.body})
 
 (defn GET [url]
   (let [ch (chan 1)]
@@ -36,11 +35,7 @@
     ch))
 
 (go
-  (swap! app-state :movies (js->clj (<! (GET "http://localhost:8000/resources/public/data/movies100.json"))
-                {:keywordize-keys true})))
+  (let [res (<! (GET "http://localhost:8000/resources/public/data/movies100.edn"))]
+    (swap! app-state
+           #(assoc-in % [:movies] (reader/read-string res)))))
 
-;(def movies (js->clj (.getResponseJson (.-target json)) :keywordize-keys true))
-;(def movies (json/read-str (slurp "resources/public/data/movies100.json")))
-
-;(om/root widget {:text "Hello world!"}
-;  {:target (. js/document (getElementById "stuff"))})
