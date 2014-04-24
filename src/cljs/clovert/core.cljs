@@ -23,7 +23,7 @@
 
 
 (om/root widget app-state
-  {:target js/document.body})
+  {:target (gdom/getElement "stuff")})
 
 (defn GET [url]
   (let [ch (chan 1)]
