@@ -12,6 +12,7 @@
                  [org.clojure/data.json "0.2.4"]
                  [aysylu/loom "0.4.2"]
                  [org.clojure/core.async "0.1.278.0-76b25b-alpha"]
+                 [net.drib/strokes "0.5.1"]
                  ;[org.clojure/tools.nrepl "0.2.3"]
                  ]
   :hooks [leiningen.cljsbuild]

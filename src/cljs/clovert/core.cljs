@@ -18,8 +18,12 @@
 
 (defn widget [data]
   (om/component
-     (html [:ul (for [n (:movies data)]
-                   [:li (:title n)])])))
+     (html [:ul (for [[n i] (map #(list %1 %2) (:movies data) (iterate inc 1))]
+                   [:li
+                    {:class "el"
+                     :style {"font-size" (* (get-in n [:results :average :mark]) 20)
+                             "top" (* i 10)}}
+                    (:title n)])])))
 
 
 (om/root widget app-state
@@ -37,5 +41,7 @@
 (go
   (let [res (<! (GET "http://localhost:8000/resources/public/data/movies100.edn"))]
     (swap! app-state
-           #(assoc-in % [:movies] (reader/read-string res)))))
+           (fn [m] (assoc-in m [:movies]
+                            (map #(assoc % :a (get-in % [:results :average :mark]))
+                                 (reader/read-string res)))))))
 
