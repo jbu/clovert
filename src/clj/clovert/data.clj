@@ -3,7 +3,8 @@
             [clojure.zip :as zip]
             [clojure.walk :as w]
             [clojure.data.json :as json]
-            [clojure.edn :as edn]))
+            [clojure.edn :as edn]
+            [clojure.string :as string]))
 
 
 (defn zip-str [s]
@@ -21,8 +22,9 @@
   {:about (get-in node [:attrs :about])
    :title (some identity
                 (map #(get-in % [:content 0]) (:content node)))
-   :peers (filter identity
-                  (map #(get-in % [:attrs :rdf:resource]) (:content node)))
+   :peers (map #(-> % (string/split #"\?") last keyword)
+               (filter identity
+                  (map #(get-in % [:attrs :rdf:resource]) (:content node))))
    :results {:average
              {:mark
               (Float/parseFloat (some identity
@@ -39,10 +41,11 @@
         jsnn (str root fl ".json")
         ednn (str root fl ".edn")
         z (zip-str (slurp rdfn))
-        p (first (w/postwalk #(replace-node %) z))]
+        p (first (w/postwalk #(replace-node %) z))
+        d (reduce #(assoc %1 (-> %2 :about (string/split #"\?") last keyword) %2) {} p)]
     (do
-      (spit jsnn (json/write-str p))
-      (spit ednn (prn-str p)))))
+      (spit jsnn (json/write-str d))
+      (spit ednn (prn-str d)))))
 
 (doseq [f files]
   (process-file f))

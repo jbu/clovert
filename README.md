@@ -4,7 +4,12 @@ A Clojure library designed to ... well, that part is up to you.
 
 ## Usage
 
-FIXME
+lein repl
+(require '[clovert.data :as d] :reload)
+
+lein cljsbuild once
+
+python3 -m http.server
 
 ## License
 
