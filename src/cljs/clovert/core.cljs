@@ -5,6 +5,7 @@
             [goog.net.XhrIo :as xhr]
             [cljs.reader :as reader]
             [goog.dom :as gdom]
+            [loom.graph :as graph]
             [cljs.core.async :as async :refer [chan close! <!]])
   (:require-macros
    [cljs.core.async.macros :refer [go alt!]]))
@@ -18,8 +19,8 @@
 
 (defn widget [data]
   (om/component
-     (html [:ul (for [[n i] (map #(list %1 %2) (:movies data) (iterate inc 1))]
-                   [:li
+     (html [:div (for [[n i] (map #(list %1 %2) (:movies data) (iterate inc 1))]
+                   [:div
                     {:class "el"
                      :style {"font-size" (* (get-in n [:results :average :mark]) 20)
                              "top" (* i 10)}}
@@ -37,6 +38,13 @@
                   (go (>! ch res)
                       (close! ch)))))
     ch))
+
+(defn prepare-data [d]
+  ; will return {:movies xxx, :graph g}
+  (let [expanded-d (map #(assoc % :a (get-in % [:results :average :mark])) d)
+        g ((apply graph/graph (flatmap)))]
+    )
+  )
 
 (go
   (let [res (<! (GET "http://localhost:8000/resources/public/data/movies100.edn"))]
