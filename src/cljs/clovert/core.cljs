@@ -5,7 +5,7 @@
             [goog.net.XhrIo :as xhr]
             [cljs.reader :as reader]
             [goog.dom :as gdom]
-            [loom.graph :as graph]
+            ;[clojure.algo.generic.functor :as functor]
             [cljs.core.async :as async :refer [chan close! <!]])
   (:require-macros
    [cljs.core.async.macros :refer [go alt!]]))
@@ -39,17 +39,10 @@
                       (close! ch)))))
     ch))
 
-(defn prepare-data [d]
-  ; will return {:movies xxx, :graph g}
-  (let [expanded-d (map #(assoc % :a (get-in % [:results :average :mark])) d)
-        g ((apply graph/graph (flatmap)))]
-    )
-  )
-
 (go
   (let [res (<! (GET "http://localhost:8000/resources/public/data/movies100.edn"))]
     (swap! app-state
            (fn [m] (assoc-in m [:movies]
-                            (map #(assoc % :a (get-in % [:results :average :mark]))
-                                 (reader/read-string res)))))))
+                             (into {} (map #(list %1 (assoc %2 :a (get-in %2 [:results :average :mark])))
+                                   (reader/read-string res))))))))
 
