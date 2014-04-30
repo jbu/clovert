@@ -42,7 +42,8 @@
         ednn (str root fl ".edn")
         z (zip-str (slurp rdfn))
         p (first (w/postwalk #(replace-node %) z))
-        d (reduce #(assoc %1 (-> %2 :about (string/split #"\?") last keyword) %2) {} p)]
+        d (reduce #(assoc %1 (-> %2 :about (string/split #"\?") last keyword) %2) {}
+                  (map #(assoc %1 :year %2) p (iterate inc 1)))]
     (do
       (spit jsnn (json/write-str d))
       (spit ednn (prn-str d)))))
